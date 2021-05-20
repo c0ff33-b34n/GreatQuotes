@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Foundation;
+using GreatQuotes.Data;
 using GreatQuotes.ViewModels;
 using UIKit;
 
@@ -14,8 +15,6 @@ namespace GreatQuotes.iOS {
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-        public MainViewModel GreatQuotesViewModel { get; private set; }
-
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
         // method you should instantiate the window, load the UI into it and then make the window
@@ -25,14 +24,11 @@ namespace GreatQuotes.iOS {
         //
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
-            var quoteLoader = new QuoteLoader();
-            GreatQuotesViewModel = new MainViewModel(() => quoteLoader.Save(GreatQuotesViewModel.Quotes)) {
-                Quotes = new ObservableCollection<GreatQuoteViewModel>(quoteLoader.Load())
-            };
+            QuoteLoaderFactory.Create = () => new QuoteLoader();
 
             global::Xamarin.Forms.Forms.Init();
-            var app = new App(GreatQuotesViewModel);
-            LoadApplication(app);
+
+            LoadApplication(new App());
 
             return base.FinishedLaunching(uiApplication, launchOptions);
         }
