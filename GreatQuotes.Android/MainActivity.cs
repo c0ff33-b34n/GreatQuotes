@@ -22,7 +22,8 @@ namespace GreatQuotes.Droid {
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             QuoteLoaderFactory.Create = () => new QuoteLoader();
-            
+            ServiceLocator.Instance.Add<ITextToSpeech, TextToSpeechService>();
+
             LoadApplication(new App());
         }
 
