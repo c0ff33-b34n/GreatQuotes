@@ -7,19 +7,23 @@ namespace GreatQuotes.Data
 {
     public class QuoteManager
     {
-        static readonly Lazy<QuoteManager> instance = new Lazy<QuoteManager>(() => new QuoteManager());
+        public static QuoteManager Instance { get; private set; }
 
         private IQuoteLoader loader;
 
         public IList<GreatQuoteViewModel> Quotes { get; set; }
 
-        public static QuoteManager Instance { get => instance.Value; }
-
-        private QuoteManager()
+        public QuoteManager(IQuoteLoader loader)
         {
-            loader = QuoteLoaderFactory.Create();
+            if (Instance != null)
+            {
+                throw new Exception("Can only create a single QuoteManager.");
+            }
+            Instance = this;
+            this.loader = loader;
             Quotes = new ObservableCollection<GreatQuoteViewModel>(loader.Load());
         }
+        
 
         public void Save()
         {

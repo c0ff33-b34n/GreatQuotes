@@ -10,6 +10,7 @@ namespace GreatQuotes.Droid {
     [Activity(Label = "@string/app_name", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        readonly SimpleContainer container = new SimpleContainer();
         
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -18,11 +19,13 @@ namespace GreatQuotes.Droid {
 
             base.OnCreate(savedInstanceState);
 
+            container.Register<IQuoteLoader, QuoteLoader>();
+            container.Create<QuoteManager>();
+
+            ServiceLocator.Instance.Add<ITextToSpeech, TextToSpeechService>();
+
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-
-            QuoteLoaderFactory.Create = () => new QuoteLoader();
-            ServiceLocator.Instance.Add<ITextToSpeech, TextToSpeechService>();
 
             LoadApplication(new App());
         }
