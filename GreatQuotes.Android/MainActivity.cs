@@ -20,9 +20,8 @@ namespace GreatQuotes.Droid {
             base.OnCreate(savedInstanceState);
 
             container.Register<IQuoteLoader, QuoteLoader>();
+            container.Register<ITextToSpeech, TextToSpeechService>();
             container.Create<QuoteManager>();
-
-            ServiceLocator.Instance.Add<ITextToSpeech, TextToSpeechService>();
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

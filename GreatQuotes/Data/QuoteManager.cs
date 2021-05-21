@@ -10,10 +10,11 @@ namespace GreatQuotes.Data
         public static QuoteManager Instance { get; private set; }
 
         private IQuoteLoader loader;
+        private ITextToSpeech tts;
 
         public IList<GreatQuoteViewModel> Quotes { get; set; }
 
-        public QuoteManager(IQuoteLoader loader)
+        public QuoteManager(IQuoteLoader loader, ITextToSpeech tts)
         {
             if (Instance != null)
             {
@@ -21,6 +22,7 @@ namespace GreatQuotes.Data
             }
             Instance = this;
             this.loader = loader;
+            this.tts = tts;
             Quotes = new ObservableCollection<GreatQuoteViewModel>(loader.Load());
         }
         
@@ -34,8 +36,6 @@ namespace GreatQuotes.Data
         {
             if (quote == null)
                 throw new ArgumentNullException("No quote set");
-
-            ITextToSpeech tts = ServiceLocator.Instance.Resolve<ITextToSpeech>();
 
             if (tts != null)
             {

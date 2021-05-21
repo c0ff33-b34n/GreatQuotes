@@ -26,9 +26,8 @@ namespace GreatQuotes.iOS {
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             container.Register<IQuoteLoader, QuoteLoader>();
+            container.Register<ITextToSpeech, TextToSpeechService>();
             container.Create<QuoteManager>();
-
-            ServiceLocator.Instance.Add<ITextToSpeech, TextToSpeechService>();
 
             global::Xamarin.Forms.Forms.Init();
 
